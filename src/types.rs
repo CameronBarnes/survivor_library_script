@@ -4,7 +4,7 @@ use humansize::WINDOWS;
 pub struct Document {
     pub name: String,
     pub path: String,
-    size: usize,
+    pub size: usize,
     pub enabled: bool
 }
 
@@ -23,6 +23,11 @@ impl Document {
 
     pub fn human_readable_size(&self) -> String {
         humansize::format_size(self.size, WINDOWS)
+    }
+
+    pub fn get_url(&self) -> String {
+        static MAIN_PATH: &str = "https://www.survivorlibrary.com";
+        format!("{MAIN_PATH}{}", self.path)
     }
 }
 

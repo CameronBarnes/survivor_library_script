@@ -1,6 +1,10 @@
 mod parsing;
 mod types;
 mod term;
+mod download;
+
+use std::path::Path;
+use std::fs;
 
 use anyhow::Result;
 
@@ -44,6 +48,25 @@ fn main() -> Result<()> {
     }
 
     tui.exit()?;
+
+    // Now we handle downloading the files or saving the paths
+    if app.download {
+        download::setup_folders()?;
+        for category in app.categories.into_iter().filter(|cat| cat.enabled) {
+            println!("Downloading {} from {}", category.human_readable_size(true), &category.name);
+            download::download_category(category)?;
+        }
+    } else if app.print {
+        let path = Path::new("./survivor_library_paths.txt");
+        let mut output = String::new();
+        app.categories.iter().filter(|cat| cat.enabled)
+            .flat_map(|cat| cat.documents.iter().filter(|doc| doc.enabled)).for_each(|doc| {
+            output.push_str(&doc.get_url());
+            output.push('\n');
+        });
+        fs::write(path, output)?;
+    }
+
     Ok(())
 
 }
