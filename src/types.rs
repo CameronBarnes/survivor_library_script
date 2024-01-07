@@ -1,5 +1,6 @@
 use humansize::WINDOWS;
 
+#[derive(Debug)]
 pub struct Document {
     pub name: String,
     pub path: String,
@@ -25,6 +26,7 @@ impl Document {
     }
 }
 
+#[derive(Debug)]
 pub struct Category {
     pub name: String,
     pub documents: Vec<Document>,

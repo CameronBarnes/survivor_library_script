@@ -16,7 +16,7 @@ pub fn parse_document_page(str: &str) -> Vec<Document> {
         }
         (location, size)
     }).map(|(path, size)| {
-        let name = path.split_once('.').unwrap().0.to_string();
+        let name = path.strip_prefix("/library/").unwrap().split_once('.').unwrap().0.replace('_', " ");
         Document::new(name, path.to_string(), size)
     }).collect()
 
