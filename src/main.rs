@@ -44,6 +44,8 @@ fn main() -> Result<()> {
             term::event::Event::Key(key_event) => update(&mut app, key_event),
             term::event::Event::Mouse(_) => {},
             term::event::Event::Resize(_, _) => {},
+            term::event::Event::FocusGained |
+                term::event::Event::FocusLost => {}, // Do nothing, needed for windows support
         }
     }
 
