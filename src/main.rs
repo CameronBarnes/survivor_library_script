@@ -16,7 +16,7 @@ fn get_categories() -> Vec<LibraryItem> {
 
 fn main() {
 
-    let category = Category::new("Survivor Library".to_string(), get_categories(), false);
+    let category = LibraryItem::Category(Category::new("Survivor Library".to_string(), get_categories(), false));
     println!("{}", serde_json::to_string(&category).unwrap());
 
 }
