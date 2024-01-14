@@ -4,16 +4,16 @@ use humansize::WINDOWS;
 pub struct Document {
     pub name: String,
     pub path: String,
-    pub size: usize,
+    pub size: u64,
     pub enabled: bool
 }
 
 impl Document {
-    pub fn new(name: String, path: String, size: usize) -> Self {
+    pub fn new(name: String, path: String, size: u64) -> Self {
         Document{name, path, size, enabled: true}
     }
 
-    pub fn enabled_size(&self) -> usize {
+    pub fn enabled_size(&self) -> u64 {
         if self.enabled {
             self.size
         } else {
@@ -43,7 +43,7 @@ impl Category {
         Category{name, documents, enabled: true}
     }
 
-    pub fn size(&self, enabled_only: bool) -> usize {
+    pub fn size(&self, enabled_only: bool) -> u64 {
         let mut total = 0;
         for doc in &self.documents {
             if enabled_only {
@@ -55,7 +55,7 @@ impl Category {
         total
     }
 
-    pub fn enabled_size(&self) -> usize {
+    pub fn enabled_size(&self) -> u64 {
         if self.enabled {
             self.size(true)
         } else {

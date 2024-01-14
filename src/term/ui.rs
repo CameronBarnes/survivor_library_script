@@ -150,8 +150,8 @@ pub fn render(app: &mut App, f: &mut Frame) {
     );
 
     // Render the total
-    // Calculate total
-    let total: usize = app.categories.iter().map(|cat| cat.enabled_size()).sum();
+    // Calculate totalOn this particulary 
+    let total: u64 = app.categories.iter().map(|cat| cat.enabled_size()).sum();
     let total_size_text = format!("Total Enabled Size: {}", humansize::format_size(total, WINDOWS));
     f.render_widget(
         Paragraph::new(total_size_text.clone())
