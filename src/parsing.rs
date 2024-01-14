@@ -3,7 +3,7 @@ use regex::Regex;
 use reqwest::blocking::Client;
 use crate::types::*;
 
-pub fn parse_document_page(str: &str) -> Vec<Document> {
+pub fn parse_document_page(str: &str) -> Vec<LibraryItem> {
 
     static RE: Lazy<Regex> = Lazy::new(|| Regex::new("<td.*?><a href=\"(.*?)\">PDF</a> (\\d+) *(.*?)</td>").unwrap());
     RE.captures_iter(str).map(|c| c.extract()).map(|(_, [location, num, unit])| {
@@ -17,7 +17,7 @@ pub fn parse_document_page(str: &str) -> Vec<Document> {
         (location, size)
     }).map(|(path, size)| {
         let name = path.strip_prefix("/library/").unwrap().split_once('.').unwrap().0.replace('_', " ");
-        Document::new(name, path.to_string(), size)
+        LibraryItem::Document(Document::new(name, path.to_string(), size, DownloadType::Http))
     }).collect()
 
 }
