@@ -17,7 +17,9 @@ pub fn parse_document_page(str: &str) -> Vec<LibraryItem> {
         (location, size)
     }).map(|(path, size)| {
         let name = path.strip_prefix("/library/").unwrap().split_once('.').unwrap().0.replace('_', " ");
-        LibraryItem::Document(Document::new(name, path.to_string(), size, DownloadType::Http))
+        static MAIN_PATH: &str = "https://www.survivorlibrary.com";
+        let url = format!("{MAIN_PATH}{path}");
+        LibraryItem::Document(Document::new(name, url, size, DownloadType::Http))
     }).collect()
 
 }
