@@ -9,7 +9,7 @@ pub enum LibraryItem {
 impl LibraryItem {
     pub fn set_enabled(&mut self, enabled: bool) -> bool {
         match self {
-            LibraryItem::Document(doc) => {
+            Self::Document(doc) => {
                 if doc.can_download() {
                     doc.enabled = enabled;
                 } else {
@@ -17,7 +17,7 @@ impl LibraryItem {
                 }
                 doc.enabled
             },
-            LibraryItem::Category(cat) => {
+            Self::Category(cat) => {
                 if cat.can_download() {
                     cat.enabled = enabled;
                 } else {
@@ -30,8 +30,8 @@ impl LibraryItem {
 
     pub fn can_download(&self) -> bool {
         match self {
-            LibraryItem::Document(doc) => doc.can_download(),
-            LibraryItem::Category(cat) => cat.can_download(),
+            Self::Document(doc) => doc.can_download(),
+            Self::Category(cat) => cat.can_download(),
         }
     }
 
@@ -43,6 +43,8 @@ pub enum DownloadType {
     Rsync,
     #[allow(unused)]
     Either,
+    #[allow(unused)]
+    Git,
 }
 
 #[derive(Debug, Serialize)]
@@ -57,7 +59,7 @@ pub struct Document {
 impl Document {
     pub fn new(name: String, url: String, size: u64, d_type: DownloadType) -> Self {
         let enabled = d_type != DownloadType::Rsync || !crate::IS_WINDOWS;
-        Document{name, url, size, download_type: d_type, enabled}
+        Self{name, url, size, download_type: d_type, enabled}
     }
 
     /// In cases such as a rsync Document on a windows system we cant download it
@@ -82,11 +84,11 @@ impl Category {
             });
         }
         let enabled = items.iter().any(LibraryItem::can_download);
-        Category{name, items, enabled, single_selection}
+        Self{name, items, single_selection, enabled}
     }
 
     pub fn can_download(&self) -> bool {
-        self.items.iter().any(|item| item.can_download())
+        self.items.iter().any(LibraryItem::can_download)
     }
 
 }
