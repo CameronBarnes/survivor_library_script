@@ -53,7 +53,7 @@ pub fn get_page_from_path(path: &str) -> String {
             .unwrap()
     });
     CLIENT
-        .get(format!("{MAIN_PATH}{path}"))
+        .get(format!("{MAIN_PATH}/{path}"))
         .send()
         .unwrap()
         .text()
