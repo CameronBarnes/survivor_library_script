@@ -38,9 +38,11 @@ pub fn parse_main_page(str: &str) -> Vec<(&str, &str)> {
     static RE: Lazy<Regex> = Lazy::new(|| {
         Regex::new("<td style=\"width: \\d+?px;\"><a style=\"font-size: medium;\" title=\".+?\" href=\"(.+?)\">(.+?)</a>").unwrap()
     });
+    #[allow(clippy::tuple_array_conversions)] // This has to be ignored, swapping the order is
+                                              // important
     RE.captures_iter(str)
         .map(|c| c.extract())
-        .map(|(_, arr)| arr.into())
+        .map(|(_, [path, name])| (name, path))
         .collect()
 }
 
@@ -53,7 +55,7 @@ pub fn get_page_from_path(path: &str) -> String {
             .unwrap()
     });
     CLIENT
-        .get(format!("{MAIN_PATH}/{path}"))
+        .get(format!("{MAIN_PATH}{path}"))
         .send()
         .unwrap()
         .text()
